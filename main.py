@@ -1,7 +1,6 @@
-from db import DynamoDB, FirestoreDB
 from appraiser.chat_gpt import ChatGPT
+from db import DynamoDB, FirestoreDB
 from helper import log_print
-
 
 log_print("===== 객체 생성 시작 =====")
 firestore = FirestoreDB()

@@ -1,4 +1,5 @@
 import os
+
 from openai import OpenAI
 
 
@@ -18,6 +19,7 @@ class ChatGPT:
         message = dict()
         message["role"] = "system"
         message["content"] = ""
+        return message
 
     def ask(self, user_input: str) -> str:
         # 유저 메시지 추가

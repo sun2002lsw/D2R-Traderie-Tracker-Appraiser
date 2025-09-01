@@ -1,6 +1,7 @@
-import boto3
 import json
 from datetime import datetime
+
+import boto3
 
 from .common import TIME_FORMAT
 
@@ -11,9 +12,9 @@ class DynamoDB:
     def __init__(self):
         # 환경변수로 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY가 자동 적용됨
         db = boto3.resource("dynamodb", region_name="ap-northeast-2")
-        db.describe_table("d2r-traderie-values")  # 연결 확인
+        db.describe_table("D2R-Traderie-Values")  # 연결 확인
 
-        self._table = db.Table("d2r-traderie-values")
+        self._table = db.Table("D2R-Traderie-Values")
 
     def put_values(self, item_values: dict, item_trades: dict) -> None:
         if set(item_values.keys()) != set(item_trades.keys()):
