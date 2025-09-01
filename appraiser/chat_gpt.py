@@ -25,10 +25,9 @@ class ChatGPT:
         response = self._client.chat.completions.create(
             model="gpt-5",
             messages=messages,
-            # 가치 산출처럼 규칙 준수형이면 아래 옵션 추천
-            temperature=0,
-            # JSON만 받기
             response_format={"type": "json_object"},
+            # gpt-4.1 전용
+            # temperature=0,
         )
 
         return response.choices[0].message.content
