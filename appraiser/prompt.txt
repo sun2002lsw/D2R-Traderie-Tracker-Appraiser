@@ -27,7 +27,7 @@ JSON 데이터가 주어지면, 각 아이템의 가치를 "Perfect Amethyst"에
 
 [출력 예시]
 {
-	"Ber Rune": 80,
+	"Ber Rune": 99,
 	"Perfect Amethyst": 1,
 	"Amn Rune": 0.7
 }
