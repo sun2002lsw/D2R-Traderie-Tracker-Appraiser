@@ -18,9 +18,7 @@ class ChatGPT:
     def _get_initial_system_messages(self):
         message = dict()
         message["role"] = "system"
-        message["content"] = (
-            "내가 보낸 메시지를 완전히 동일하게 echo해줘. 마지막에 '끝'이라는 말만 추가해"
-        )
+        message["content"] = open("prompt.txt", "r").read()
         return message
 
     def ask(self, user_input: str) -> str:

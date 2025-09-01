@@ -27,7 +27,13 @@ for item_name, trades in item_trades.items():
         query_item_trades[item_name] = trades["trade_list"]
 log_print("===== 오래된 거래 내역 삭제 완료 =====")
 
-log_print(f"===== {len(query_item_trades)}개의 아이템 추출 완료 =====")
+log_print(f"===== {len(query_item_trades)}개의 아이템에 대해 분석 시작 =====")
 trades_json = json.dumps(query_item_trades, ensure_ascii=False, indent=2)
-log_print(f"나의 문장: {trades_json}")
-log_print(f"GPT 답변: {chat_gpt.ask(trades_json)}")
+item_values = json.loads(chat_gpt.ask(trades_json))
+for item_name, item_value in item_values.items():
+    log_print(f"{item_name}: {item_value}")
+log_print("===== 분석 완료 =====")
+
+log_print("===== 분석 결과 저장 시작 =====")
+dynamodb.put_values(item_values, query_item_trades)
+log_print("===== 분석 결과 저장 완료 =====")
