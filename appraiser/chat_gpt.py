@@ -16,9 +16,13 @@ class ChatGPT:
         self._messages = [message]
 
     def _get_initial_system_messages(self):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        prompt_path = os.path.join(current_dir, "prompt.txt")
+
         message = dict()
         message["role"] = "system"
-        message["content"] = open("prompt.txt", "r").read()
+        message["content"] = open(prompt_path, "r").read()
+
         return message
 
     def ask(self, user_input: str) -> str:
