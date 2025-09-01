@@ -1,0 +1,33 @@
+steps:
+  # 1) Docker 이미지 빌드
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -t
+      - 'asia-northeast3-docker.pkg.dev/traderiebot/d2r-traderie-tracker/appraiser:$COMMIT_SHA'
+      - .
+
+  # 2) Artifact Registry로 푸시
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - 'asia-northeast3-docker.pkg.dev/traderiebot/d2r-traderie-tracker/appraiser:$COMMIT_SHA'
+
+  # 3) Cloud Run Job 업데이트
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        set -euo pipefail
+        gcloud run jobs update 'd2r-traderie-tracker-appraiser' \
+          --image 'asia-northeast3-docker.pkg.dev/traderiebot/d2r-traderie-tracker/appraiser:$COMMIT_SHA' \
+          --region 'asia-northeast3'
+
+# 빌드된 이미지를 Cloud Build의 메타데이터에 등록합니다.
+# 이 부분은 선택 사항이지만, Cloud Build UI에서 빌드된 이미지를 쉽게 확인할 수 있게 해줍니다.
+images:
+  - 'asia-northeast3-docker.pkg.dev/traderiebot/d2r-traderie-tracker/appraiser:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

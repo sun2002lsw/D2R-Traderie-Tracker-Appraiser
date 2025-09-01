@@ -1,0 +1,13 @@
+openai
+boto3
+google-cloud-firestore
+
+# Code quality and linting tools
+flake8
+black
+isort
+pylint
+mypy
+
+# Testing tools
+pytest
