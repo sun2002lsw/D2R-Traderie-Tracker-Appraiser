@@ -7,12 +7,10 @@ from .common import TIME_FORMAT
 
 
 class DynamoDB:
-    """DynamoDB 클라이언트 클래스"""
-
     def __init__(self):
         # 환경변수로 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY가 자동 적용됨
-        db = boto3.resource("dynamodb", region_name="ap-northeast-2")
-        db.describe_table("D2R-Traderie-Values")  # 연결 확인
+        db = boto3.client("dynamodb", region_name="ap-northeast-2")
+        db.describe_table(TableName="D2R-Traderie-Values")  # 연결 확인
 
         self._table = db.Table("D2R-Traderie-Values")
 
