@@ -23,7 +23,7 @@ class ChatGPT:
     def _send_message(self, system_message: dict, user_message: dict) -> str:
         messages = [system_message, user_message]
         response = self._client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=messages,
             # 가치 산출처럼 규칙 준수형이면 아래 옵션 추천
             temperature=0,
