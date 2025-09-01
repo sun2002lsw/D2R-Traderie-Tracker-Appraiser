@@ -12,25 +12,23 @@ class ChatGPT:
 
         self._client = OpenAI(api_key=api_key)
 
-    def _get_initial_system_prompt(self):
+    def _get_initial_system_prompt(self) -> dict:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         prompt_path = os.path.join(current_dir, "prompt.txt")
-        prompt = open(prompt_path, "r").read()
-        print(prompt)
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt = f.read()
 
-        message = dict()
-        message["role"] = "system"
-        message["content"] = prompt
-
-        return message
+        return {"role": "system", "content": prompt}
 
     def _send_message(self, system_message: dict, user_message: dict) -> str:
-        messages = []
-        messages.append(system_message)
-        messages.append(user_message)
-
+        messages = [system_message, user_message]
         response = self._client.chat.completions.create(
-            model="gpt-4o-mini", messages=messages
+            model="gpt-4o-mini",
+            messages=messages,
+            # 가치 산출처럼 규칙 준수형이면 아래 옵션 추천
+            temperature=0,
+            # JSON만 받기
+            response_format={"type": "json_object"},
         )
 
         return response.choices[0].message.content
@@ -42,8 +40,7 @@ class ChatGPT:
         return self._send_message(system_message, user_message)
 
     def request_appraise(self, user_input: str) -> str:
-        system_prompt = self._get_initial_system_prompt()
-        system_message = {"role": "system", "content": system_prompt}
+        system_message = self._get_initial_system_prompt()
         user_message = {"role": "user", "content": user_input}
 
         return self._send_message(system_message, user_message)
