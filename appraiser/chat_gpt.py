@@ -10,20 +10,38 @@ class ChatGPT:
         if api_key is None:
             raise Exception("OPENAI_API_KEY 환경변수가 설정되지 않았습니다.")
 
-        message = self._get_initial_system_messages()
+        message = self._get_initial_system_prompt()
 
         self._client = OpenAI(api_key=api_key)
         self._messages = [message]
 
-    def _get_initial_system_messages(self):
+    def _get_initial_system_prompt(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         prompt_path = os.path.join(current_dir, "prompt.txt")
+        prompt = open(prompt_path, "r").read()
+        print(prompt)
 
         message = dict()
         message["role"] = "system"
-        message["content"] = open(prompt_path, "r").read()
+        message["content"] = prompt
 
         return message
+
+    def echo(self, user_input: str) -> str:
+        system_message = {"role": "system", "content": "내 말을 그대로 따라해해"}
+        user_message = {"role": "user", "content": user_input}
+
+        messages = []
+        messages.append(system_message)
+        messages.append(user_message)
+
+        # API 호출
+        response = self._client.chat.completions.create(
+            model="gpt-5", messages=messages
+        )
+
+        # 모델 응답 꺼내기
+        return response.choices[0].message.content
 
     def ask(self, user_input: str) -> str:
         # 유저 메시지 추가
