@@ -36,7 +36,7 @@ trades_json = json.dumps(query_item_trades, ensure_ascii=False)
 response = chat_gpt.echo(trades_json)
 log_print(response)
 """
-item_values = json.loads(chat_gpt.ask(trades_json))
+item_values = json.loads(chat_gpt.request_appraise(trades_json))
 for item_name, item_value in item_values.items():
     log_print(f"{item_name}: {item_value}")
 """

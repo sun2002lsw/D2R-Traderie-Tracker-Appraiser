@@ -10,10 +10,7 @@ class ChatGPT:
         if api_key is None:
             raise Exception("OPENAI_API_KEY 환경변수가 설정되지 않았습니다.")
 
-        message = self._get_initial_system_prompt()
-
         self._client = OpenAI(api_key=api_key)
-        self._messages = [message]
 
     def _get_initial_system_prompt(self):
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,35 +24,26 @@ class ChatGPT:
 
         return message
 
-    def echo(self, user_input: str) -> str:
-        system_message = {"role": "system", "content": "내 말을 그대로 따라해해"}
-        user_message = {"role": "user", "content": user_input}
-
+    def _send_message(self, system_message: dict, user_message: dict) -> str:
         messages = []
         messages.append(system_message)
         messages.append(user_message)
 
-        # API 호출
         response = self._client.chat.completions.create(
-            model="gpt-5", messages=messages
+            model="gpt-4o-mini", messages=messages
         )
 
-        # 모델 응답 꺼내기
         return response.choices[0].message.content
 
-    def ask(self, user_input: str) -> str:
-        # 유저 메시지 추가
-        self._messages.append({"role": "user", "content": user_input})
+    def echo(self, user_input: str) -> str:
+        system_message = {"role": "system", "content": "내 말을 그대로 따라해"}
+        user_message = {"role": "user", "content": user_input}
 
-        # API 호출
-        response = self._client.chat.completions.create(
-            model="gpt-5", messages=self._messages
-        )
+        return self._send_message(system_message, user_message)
 
-        # 모델 응답 꺼내기
-        assistant_reply = response.choices[0].message.content
+    def request_appraise(self, user_input: str) -> str:
+        system_prompt = self._get_initial_system_prompt()
+        system_message = {"role": "system", "content": system_prompt}
+        user_message = {"role": "user", "content": user_input}
 
-        # assistant 메시지를 대화 이력에 추가
-        self._messages.append({"role": "assistant", "content": assistant_reply})
-
-        return assistant_reply
+        return self._send_message(system_message, user_message)
