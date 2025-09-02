@@ -14,7 +14,7 @@ class ChatGPT:
 
     def _get_initial_system_prompt(self) -> dict:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        prompt_path = os.path.join(current_dir, "prompt.txt")
+        prompt_path = os.path.join(current_dir, "chat_gpt_prompt.txt")
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt = f.read()
 
@@ -26,7 +26,7 @@ class ChatGPT:
             model="gpt-5",
             messages=messages,
             response_format={"type": "json_object"},
-            # gpt-4.1 전용
+            # gpt-4.1, gpt-4o 전용
             # temperature=0,
         )
 

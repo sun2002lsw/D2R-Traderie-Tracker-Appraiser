@@ -1,14 +1,13 @@
-import json
 from datetime import datetime, timedelta
 
 import db
-from appraiser.chat_gpt import ChatGPT
 from helper import log_print
+from appraiser import AnchorLayeredTrimmedSolver
 
 log_print("===== 객체 생성 시작 =====")
 firestore = db.FirestoreDB()
 dynamodb = db.DynamoDB()
-chat_gpt = ChatGPT()
+appraiser = AnchorLayeredTrimmedSolver()
 log_print("===== 객체 생성 완료 =====")
 
 log_print("===== 아이템 거래 내역 추출 시작 =====")
@@ -32,8 +31,7 @@ if len(query_item_trades) == 0:
     exit()
 
 log_print(f"===== {len(query_item_trades)}개의 아이템에 대해 분석 시작 =====")
-trades_json = json.dumps(query_item_trades, ensure_ascii=False)
-item_values = json.loads(chat_gpt.request_appraise(trades_json))
+item_values = appraiser.appraise(query_item_trades)
 for item_name, item_value in item_values.items():
     log_print(f"{item_name}: {item_value}")
 log_print("===== 분석 완료 =====")
