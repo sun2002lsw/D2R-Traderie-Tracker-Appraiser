@@ -1,7 +1,7 @@
-import os
 import json
 import math
-from typing import Dict, List, Tuple, Optional
+import os
+from typing import Dict, List, Optional, Tuple
 
 
 class AnchorLayeredTrimmedSolver:

@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
 import db
-from helper import log_print
 from appraiser import AnchorLayeredTrimmedSolver
+from helper import log_print
 
 log_print("===== 객체 생성 시작 =====")
 firestore = db.FirestoreDB()
