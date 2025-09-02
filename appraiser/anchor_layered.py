@@ -44,6 +44,9 @@ class AnchorLayeredTrimmedSolver:
     def _seed_from_anchor(self, trades_by_item: Dict) -> Tuple[Dict[str, float], set]:
         values: Dict[str, float] = {self.anchor_item: 1.0}
         known = {self.anchor_item}
+
+        print(trades_by_item.get(self.anchor_item, []))
+
         for cntA, offers in trades_by_item.get(self.anchor_item, []):
             if cntA <= 0:
                 continue
