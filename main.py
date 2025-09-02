@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 import db
@@ -23,7 +24,7 @@ for item_name, trades in item_trades.items():
     if datetime.now() - update_time > timedelta(hours=6):
         log_print(f"{item_name}: {trades["update_time"]}")
     else:
-        query_item_trades[item_name] = trades["trade_list"]
+        query_item_trades[item_name] = json.loads(trades["trade_list"])
 log_print("===== 오래된 거래 내역 삭제 완료 =====")
 
 if len(query_item_trades) == 0:
