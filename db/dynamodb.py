@@ -10,9 +10,9 @@ class DynamoDB:
     def __init__(self):
         # 환경변수로 AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY가 자동 적용됨
         db = boto3.resource("dynamodb", region_name="ap-northeast-2")
-        db.meta.client.describe_table(TableName="D2R-Traderie-Values")  # 연결 확인
+        db.meta.client.describe_table(TableName="D2R-Traderie-ItemValues")  # 연결 확인
 
-        self._table = db.Table("D2R-Traderie-Values")
+        self._table = db.Table("D2R-Traderie-ItemValues")
 
     def put_values(self, item_values: dict, item_trades: dict) -> None:
         if set(item_values.keys()) != set(item_trades.keys()):
@@ -26,8 +26,9 @@ class DynamoDB:
 
         values_json = json.dumps(item_values_with_trades, ensure_ascii=False)
         item_data = {
-            "update_time": datetime.now().strftime(TIME_FORMAT),
-            "item_values": values_json,
+            "Mode": "Softcore-Ladder",
+            "InsertTime": datetime.now().strftime(TIME_FORMAT),
+            "ItemValues": values_json,
         }
 
         self._table.put_item(Item=item_data)
