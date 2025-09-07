@@ -24,11 +24,11 @@ class DynamoDB:
             item_values_with_trades[item_name]["value"] = item_value
             item_values_with_trades[item_name]["trades"] = item_trades[item_name]
 
-        values_json = json.dumps(item_values_with_trades, ensure_ascii=False)
+        infos_json = json.dumps(item_values_with_trades, ensure_ascii=False)
         item_data = {
             "Mode": "Softcore-Ladder",
             "InsertTime": datetime.now().strftime(TIME_FORMAT),
-            "ItemValues": values_json,
+            "ItemInfos": infos_json,
         }
 
         self._table.put_item(Item=item_data)
